@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Settings as SettingsIcon } from 'lucide-react';
+import { CaseProvider } from './contexts/CaseContext';
 import { LandingPage } from './components/LandingPage';
 import { Dashboard } from './components/Dashboard';
+import { CaseProfile } from './components/CaseProfile';
 import { EvidenceVault } from './components/EvidenceVault';
 import { AILegalTeamEnhanced } from './components/AILegalTeamEnhanced';
 import { Logistics } from './components/Logistics';
@@ -10,12 +12,15 @@ import { Finance } from './components/Finance';
 import { LawLibrary } from './components/LawLibrary';
 import { DiscoveryManager as Discovery } from './components/DiscoveryManager';
 import { Binder } from './components/Binder';
+import { TimelineBuilder } from './components/TimelineBuilder';
+import { FoundationBuilder } from './components/FoundationBuilder';
+import { CourtroomPresentation } from './components/CourtroomPresentation';
 import { Sidebar } from './components/Sidebar';
 import { Settings } from './components/Settings';
 import { MobileNav } from './components/MobileNav';
 import { callGemini, AI_PROMPTS } from './utils/gemini';
 
-type View = 'landing' | 'dashboard' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder';
+type View = 'landing' | 'dashboard' | 'case-profile' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder' | 'timeline' | 'foundation' | 'presentation';
 
 interface Evidence {
   batesNumber: string;
@@ -32,7 +37,7 @@ interface AppState {
   evidence: Evidence[];
 }
 
-const STORAGE_KEY = 'litigation_command_center_v1';
+const STORAGE_KEY = 'we_the_parent_app_state_v1';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<View>('landing');
@@ -119,6 +124,8 @@ export default function App() {
         return <LandingPage onEnter={() => setCurrentView('dashboard')} />;
       case 'dashboard':
         return <Dashboard />;
+      case 'case-profile':
+        return <CaseProfile />;
       case 'evidence':
         return <EvidenceVault onAddEvidence={handleAddEvidence} />;
       case 'ai-team':
@@ -133,6 +140,12 @@ export default function App() {
         return <Discovery />;
       case 'binder':
         return <Binder evidence={state.evidence} />;
+      case 'timeline':
+        return <TimelineBuilder />;
+      case 'foundation':
+        return <FoundationBuilder />;
+      case 'presentation':
+        return <CourtroomPresentation />;
       default:
         return <Dashboard />;
     }
@@ -154,49 +167,51 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
-      {/* Desktop Sidebar */}
-      <div className="hidden md:block">
-        <Sidebar currentView={currentView} onNavigate={setCurrentView} />
-      </div>
-      
-      {/* Mobile Navigation */}
-      <div className="md:hidden">
-        <MobileNav 
-          currentView={currentView} 
-          onNavigate={(view) => {
-            setCurrentView(view);
-            setIsMobileMenuOpen(false);
-          }}
-          isOpen={isMobileMenuOpen}
-          onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+    <CaseProvider>
+      <div className="min-h-screen flex flex-col md:flex-row bg-gray-50">
+        {/* Desktop Sidebar */}
+        <div className="hidden md:block">
+          <Sidebar currentView={currentView} onNavigate={setCurrentView} />
+        </div>
+        
+        {/* Mobile Navigation */}
+        <div className="md:hidden">
+          <MobileNav 
+            currentView={currentView} 
+            onNavigate={(view) => {
+              setCurrentView(view);
+              setIsMobileMenuOpen(false);
+            }}
+            isOpen={isMobileMenuOpen}
+            onToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          />
+        </div>
+        
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto">
+          {renderView()}
+        </main>
+
+        {/* Settings Button - Fixed position */}
+        <button
+          onClick={() => setIsSettingsOpen(true)}
+          className="fixed top-4 right-4 md:top-8 md:right-8 btn btn-sm btn-ghost flex items-center gap-2 z-30 bg-white"
+          style={{ boxShadow: 'var(--elevation-2)' }}
+          aria-label="Settings"
+        >
+          <SettingsIcon className="w-4 h-4" />
+          <span className="hidden md:inline">Settings</span>
+        </button>
+
+        {/* Settings Modal */}
+        <Settings
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          apiKey={state.apiKey}
+          batesPrefix={state.batesPrefix}
+          onSave={handleSaveSettings}
+          onClearData={handleClearData}
         />
       </div>
-      
-      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
-        {renderView()}
-      </main>
-
-      {/* Settings Button - Fixed position */}
-      <button
-        onClick={() => setIsSettingsOpen(true)}
-        className="fixed top-4 right-4 md:top-8 md:right-8 btn btn-sm btn-ghost flex items-center gap-2 z-30 bg-white"
-        style={{ boxShadow: 'var(--elevation-2)' }}
-        aria-label="Settings"
-      >
-        <SettingsIcon className="w-4 h-4" />
-        <span className="hidden md:inline">Settings</span>
-      </button>
-
-      {/* Settings Modal */}
-      <Settings
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-        apiKey={state.apiKey}
-        batesPrefix={state.batesPrefix}
-        onSave={handleSaveSettings}
-        onClearData={handleClearData}
-      />
-    </div>
+    </CaseProvider>
   );
 }

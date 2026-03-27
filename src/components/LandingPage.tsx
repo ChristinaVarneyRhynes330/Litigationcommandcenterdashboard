@@ -14,7 +14,7 @@ export function LandingPage({ onEnter }: LandingPageProps) {
     'AI-powered legal research and analysis',
     'Comprehensive evidence management with Bates stamping',
     'Integrated conferral and logistics tracking',
-    'Collaborative case planning tools',
+    'Pro se dependency litigation support',
     'Secure document vault with encryption'
   ];
 
@@ -28,12 +28,16 @@ export function LandingPage({ onEnter }: LandingPageProps) {
           </div>
           
           <h1 className="text-gray-900 mb-4">
-            Litigation Command Center
+            We The Parent™
           </h1>
           
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-            Enterprise-grade legal case management platform. Streamline litigation workflows, 
-            collaborate with AI legal assistants, and maintain complete oversight from discovery through trial.
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-2">
+            Legal Operating System for Pro Se Dependency Litigation
+          </p>
+          
+          <p className="text-base text-gray-500 max-w-2xl mx-auto mb-8">
+            Enterprise-grade case management platform designed for parents navigating Florida family dependency court. 
+            Streamline your litigation workflows with AI legal assistants and maintain complete oversight from discovery through trial.
           </p>
           
           <button
@@ -49,10 +53,10 @@ export function LandingPage({ onEnter }: LandingPageProps) {
         <div className="grid grid-cols-2 gap-6 mb-16">
           <div className="card">
             <div className="card-body">
-              <h3 className="text-gray-900 mb-3">Case Management</h3>
+              <h3 className="text-gray-900 mb-3">Case Profile Management</h3>
               <p className="text-gray-600 mb-4">
-                Comprehensive deadline tracking, task management, and case timeline visualization. 
-                Never miss a critical filing deadline.
+                Centralized case information, children profiles, and court details. 
+                Track all entities, events, and tasks from a single source of truth.
               </p>
               <div className="flex items-center gap-2 text-sm text-teal">
                 <div className="w-1.5 h-1.5 rounded-full bg-teal" />

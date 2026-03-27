@@ -11,10 +11,14 @@ import {
   X,
   Scale,
   Upload,
-  BookMarked
+  BookMarked,
+  FileText,
+  Clock,
+  ScaleIcon,
+  Presentation
 } from 'lucide-react';
 
-type View = 'dashboard' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'people' | 'library' | 'discovery' | 'binder';
+type View = 'dashboard' | 'case-profile' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'people' | 'library' | 'discovery' | 'binder' | 'timeline' | 'foundation' | 'presentation';
 
 interface MobileNavProps {
   currentView: View;
@@ -25,7 +29,11 @@ interface MobileNavProps {
 
 const navItems = [
   { id: 'dashboard' as View, label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'case-profile' as View, label: 'Case Profile', icon: FileText },
+  { id: 'timeline' as View, label: 'Timeline', icon: Clock },
   { id: 'evidence' as View, label: 'Evidence Vault', icon: FolderOpen },
+  { id: 'foundation' as View, label: 'Foundation Builder', icon: ScaleIcon },
+  { id: 'presentation' as View, label: 'Presentation', icon: Presentation },
   { id: 'ai-team' as View, label: 'AI Legal Team', icon: Bot },
   { id: 'logistics' as View, label: 'Logistics', icon: Truck },
   { id: 'hearing' as View, label: 'Hearing Mode', icon: Gavel },
@@ -49,7 +57,7 @@ export function MobileNav({ currentView, onNavigate, isOpen, onToggle }: MobileN
             <Scale className="w-4 h-4 text-white" />
           </div>
           <div>
-            <h3 className="text-sm">Command Center</h3>
+            <h3 className="text-sm">We The Parent™</h3>
             <p className="text-xs text-[#36454F]/60">{currentItem?.label}</p>
           </div>
         </div>

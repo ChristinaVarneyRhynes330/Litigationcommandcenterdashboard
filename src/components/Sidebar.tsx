@@ -8,10 +8,14 @@ import {
   BookOpen,
   Scale,
   Upload,
-  BookMarked
+  BookMarked,
+  FileText,
+  Clock,
+  ScaleIcon,
+  Presentation
 } from 'lucide-react';
 
-type View = 'dashboard' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder';
+type View = 'dashboard' | 'case-profile' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder' | 'timeline' | 'foundation' | 'presentation';
 
 interface SidebarProps {
   currentView: View;
@@ -20,7 +24,11 @@ interface SidebarProps {
 
 const navItems = [
   { id: 'dashboard' as View, label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'case-profile' as View, label: 'Case Profile', icon: FileText },
+  { id: 'timeline' as View, label: 'Timeline', icon: Clock },
   { id: 'evidence' as View, label: 'Evidence Vault', icon: FolderOpen },
+  { id: 'foundation' as View, label: 'Foundation Builder', icon: ScaleIcon },
+  { id: 'presentation' as View, label: 'Presentation', icon: Presentation },
   { id: 'ai-team' as View, label: 'AI Legal Team', icon: Bot },
   { id: 'logistics' as View, label: 'Logistics', icon: Truck },
   { id: 'hearing' as View, label: 'Hearing Mode', icon: Gavel },
@@ -43,8 +51,8 @@ export function Sidebar({ currentView, onNavigate }: SidebarProps) {
             <Scale className="w-5 h-5 text-white" />
           </div>
           <div className="min-w-0">
-            <h2 className="text-base font-semibold text-gray-900 truncate">Litigation Command</h2>
-            <p className="text-xs text-gray-600">v2.4.1</p>
+            <h2 className="text-base font-semibold text-gray-900 truncate">We The Parent™</h2>
+            <p className="text-xs text-gray-600">Legal OS</p>
           </div>
         </div>
       </div>
@@ -72,19 +80,9 @@ export function Sidebar({ currentView, onNavigate }: SidebarProps) {
       
       {/* Footer Stats */}
       <div className="p-4 border-t border-gray-200 bg-gray-50">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Win Rate</span>
-            <span className="font-semibold text-gray-900">94%</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Total Cases</span>
-            <span className="font-semibold text-gray-900">127</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-600">Active</span>
-            <span className="font-semibold text-gray-900">8</span>
-          </div>
+        <div className="space-y-2 text-center">
+          <div className="text-xs text-gray-500 uppercase tracking-wider">Pro Se Dependency</div>
+          <div className="text-sm font-medium text-brand-rose">Florida Family Law</div>
         </div>
       </div>
     </aside>

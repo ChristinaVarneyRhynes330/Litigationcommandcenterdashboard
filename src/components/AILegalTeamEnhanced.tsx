@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Brain, FileEdit, ClipboardCheck, Handshake, MessageSquare, Send, Loader2, FileText, Sparkles } from 'lucide-react';
 import { callGemini, AI_PROMPTS } from '../utils/gemini';
 import { AIAgent } from './illustrations/AIAgent';
+import { useCaseContext } from '../contexts/CaseContext';
 
 type Agent = 'strategist' | 'drafter' | 'clerk' | 'negotiator' | 'examiner';
 
@@ -16,6 +17,7 @@ interface AILegalTeamEnhancedProps {
 }
 
 export function AILegalTeamEnhanced({ apiKey }: AILegalTeamEnhancedProps) {
+  const { caseData } = useCaseContext();
   const [activeAgent, setActiveAgent] = useState<Agent>('strategist');
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([
@@ -98,6 +100,13 @@ export function AILegalTeamEnhanced({ apiKey }: AILegalTeamEnhancedProps) {
     setIsLoading(true);
 
     try {
+      // Add case context to the prompt if case profile exists
+      let contextualPrompt = input;
+      if (caseData.caseNumber) {
+        const caseContext = `\n\nCase Context:\n- Case: ${caseData.caseName} (${caseData.caseNumber})\n- Court: ${caseData.county} ${caseData.courtType}\n- Judge: ${caseData.judge || 'Not specified'}\n- Children: ${caseData.children.map(c => `${c.firstName} ${c.lastName} (${c.age} years old)`).join(', ')}\n- Filing Date: ${caseData.filingDate}\n\nUser Request: ${input}`;
+        contextualPrompt = caseContext;
+      }
+
       const promptMap: Record<Agent, string> = {
         strategist: AI_PROMPTS.strategist,
         drafter: AI_PROMPTS.drafter,
@@ -107,7 +116,7 @@ export function AILegalTeamEnhanced({ apiKey }: AILegalTeamEnhancedProps) {
       };
 
       const response = await callGemini(
-        input,
+        contextualPrompt,
         promptMap[activeAgent],
         apiKey
       );

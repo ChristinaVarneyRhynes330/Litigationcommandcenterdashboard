@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { Clock, TrendingUp, AlertCircle, Calendar, FileText, ChevronRight, Target, Zap, CheckCircle, Shield, Gavel, Scale } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 import { ProgressRing } from './ProgressRing';
+import { useCaseContext } from '../contexts/CaseContext';
 
 export function Dashboard() {
+  const { caseData } = useCaseContext();
   const [timeRemaining, setTimeRemaining] = useState({
     days: 14,
     hours: 8,
@@ -47,6 +49,46 @@ export function Dashboard() {
       background: 'linear-gradient(180deg, #0a0d1a 0%, #0f1117 50%, #1a1d29 100%)',
     }}>
       <div className="max-w-[1600px] mx-auto p-8 space-y-8">
+        
+        {/* Case Summary Badge - NEW */}
+        {caseData.caseNumber && (
+          <div style={{
+            background: 'rgba(159, 81, 102, 0.1)',
+            border: '1px solid rgba(159, 81, 102, 0.3)',
+            borderRadius: '12px',
+            padding: '20px 24px',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+            backdropFilter: 'blur(10px)'
+          }}>
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              <div>
+                <div style={{ fontSize: '10px', fontWeight: '600', letterSpacing: '0.1em', color: '#9F5166', textTransform: 'uppercase', marginBottom: '4px' }}>
+                  Active Case
+                </div>
+                <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#fff', marginBottom: '2px' }}>
+                  {caseData.caseName || 'Case Profile'}
+                </h2>
+                <p style={{ fontSize: '14px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                  {caseData.caseNumber} • {caseData.county} {caseData.courtType}
+                </p>
+              </div>
+              <div className="flex gap-6 text-center">
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#9F5166' }}>{caseData.children.length}</div>
+                  <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Children</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#24bca3' }}>{caseData.events.length}</div>
+                  <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Events</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#8e9775' }}>{caseData.tasks.length}</div>
+                  <div style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.5)' }}>Tasks</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Command Header */}
         <div style={{
