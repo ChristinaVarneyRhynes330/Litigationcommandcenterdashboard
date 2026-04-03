@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Clock, TrendingUp, AlertCircle, Calendar, FileText, ChevronRight, Target, Zap, CheckCircle, Shield, Gavel, Scale } from 'lucide-react';
+import { Clock, TrendingUp, AlertCircle, Calendar, FileText, ChevronRight, Target, Zap, CheckCircle, Shield, Gavel, Scale, Brain, ArrowUp, ArrowDown, Minus } from 'lucide-react';
 import { Tooltip } from './Tooltip';
 import { ProgressRing } from './ProgressRing';
 import { useCaseContext } from '../contexts/CaseContext';
@@ -12,6 +12,7 @@ export function Dashboard() {
     minutes: 32,
     seconds: 45
   });
+  const [strategyData, setStrategyData] = useState<any>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -26,6 +27,14 @@ export function Dashboard() {
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Load latest strategy analysis
+  useEffect(() => {
+    const saved = localStorage.getItem('wtp_latest_analysis');
+    if (saved) {
+      setStrategyData(JSON.parse(saved));
+    }
   }, []);
 
   const caseReadiness = 68;
@@ -354,6 +363,188 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-8">
+            
+            {/* Strategy Engine Widget */}
+            {strategyData && (
+              <div style={{
+                background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(67, 56, 202, 0.1) 100%)',
+                border: '1px solid rgba(99, 102, 241, 0.3)',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)'
+              }}>
+                <div style={{
+                  padding: '24px 32px',
+                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)'
+                }}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div style={{
+                        width: '44px',
+                        height: '44px',
+                        borderRadius: '10px',
+                        background: 'rgba(99, 102, 241, 0.15)',
+                        border: '1px solid rgba(99, 102, 241, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Brain className="w-5 h-5" style={{ color: '#6366f1' }} />
+                      </div>
+                      <div>
+                        <h2 style={{ fontSize: '18px', fontWeight: '600', color: '#ffffff', marginBottom: '2px' }}>Strategy Analysis</h2>
+                        <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)' }}>
+                          Last updated: {new Date(strategyData.timestamp).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => window.location.href = '#strategy'}
+                      style={{
+                        background: 'rgba(99, 102, 241, 0.2)',
+                        color: '#a5b4fc',
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        border: '1px solid rgba(99, 102, 241, 0.3)',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      View Full Analysis
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+                
+                <div style={{ padding: '32px' }}>
+                  <div className="grid grid-cols-4 gap-6 mb-6">
+                    <div style={{ textAlign: 'center' }}>
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <div style={{
+                          fontSize: '42px',
+                          fontWeight: '700',
+                          color: '#ffffff',
+                          lineHeight: '1'
+                        }}>{strategyData.overallScore}%</div>
+                        {strategyData.trend === 'up' && <ArrowUp className="w-6 h-6 text-green-500" />}
+                        {strategyData.trend === 'down' && <ArrowDown className="w-6 h-6 text-red-500" />}
+                        {strategyData.trend === 'stable' && <Minus className="w-6 h-6 text-gray-400" />}
+                      </div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontWeight: '600'
+                      }}>Overall Strength</div>
+                    </div>
+
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{
+                        fontSize: '42px',
+                        fontWeight: '700',
+                        color: '#10b981',
+                        lineHeight: '1',
+                        marginBottom: '8px'
+                      }}>{strategyData.strengths.length}</div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontWeight: '600'
+                      }}>Strengths</div>
+                    </div>
+
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{
+                        fontSize: '42px',
+                        fontWeight: '700',
+                        color: '#ef4444',
+                        lineHeight: '1',
+                        marginBottom: '8px'
+                      }}>{strategyData.risks.length}</div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontWeight: '600'
+                      }}>Risks</div>
+                    </div>
+
+                    <div style={{ textAlign: 'center' }}>
+                      <div style={{
+                        fontSize: '42px',
+                        fontWeight: '700',
+                        color: '#3b82f6',
+                        lineHeight: '1',
+                        marginBottom: '8px'
+                      }}>{strategyData.recommendations.length}</div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontWeight: '600'
+                      }}>Actions</div>
+                    </div>
+                  </div>
+
+                  {/* Top Priority Actions */}
+                  {strategyData.recommendations.slice(0, 2).length > 0 && (
+                    <div>
+                      <div style={{ 
+                        fontSize: '13px', 
+                        fontWeight: '600', 
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        marginBottom: '12px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>
+                        Priority Actions
+                      </div>
+                      <div className="space-y-2">
+                        {strategyData.recommendations.slice(0, 2).map((rec: any, idx: number) => (
+                          <div key={idx} style={{
+                            background: 'rgba(255, 255, 255, 0.05)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            borderRadius: '8px',
+                            padding: '12px 16px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px'
+                          }}>
+                            <div style={{
+                              width: '6px',
+                              height: '6px',
+                              borderRadius: '50%',
+                              background: rec.priority === 'urgent' ? '#ef4444' : rec.priority === 'high' ? '#f59e0b' : '#3b82f6',
+                              boxShadow: rec.priority === 'urgent' ? '0 0 8px rgba(239, 68, 68, 0.6)' : 'none'
+                            }} />
+                            <div className="flex-1">
+                              <div style={{ fontSize: '13px', color: '#ffffff', fontWeight: '500' }}>
+                                {rec.title}
+                              </div>
+                              <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '2px' }}>
+                                {rec.action}
+                              </div>
+                            </div>
+                            {rec.module && (
+                              <ChevronRight className="w-4 h-4" style={{ color: 'rgba(255, 255, 255, 0.3)' }} />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             
             {/* Docket Clock */}
             <div style={{

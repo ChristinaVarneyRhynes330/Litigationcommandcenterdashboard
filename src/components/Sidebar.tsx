@@ -12,10 +12,15 @@ import {
   FileText,
   Clock,
   ScaleIcon,
-  Presentation
+  Presentation,
+  Command,
+  Users,
+  Search,
+  Bell,
+  Brain
 } from 'lucide-react';
 
-type View = 'dashboard' | 'case-profile' | 'evidence' | 'ai-team' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder' | 'timeline' | 'foundation' | 'presentation';
+type View = 'dashboard' | 'case-profile' | 'evidence' | 'command' | 'logs' | 'people' | 'search' | 'alerts' | 'strategy' | 'logistics' | 'hearing' | 'finance' | 'library' | 'discovery' | 'binder' | 'timeline' | 'foundation' | 'presentation';
 
 interface SidebarProps {
   currentView: View;
@@ -24,12 +29,17 @@ interface SidebarProps {
 
 const navItems = [
   { id: 'dashboard' as View, label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'command' as View, label: 'Command Center', icon: Command },
+  { id: 'search' as View, label: 'Search', icon: Search },
+  { id: 'strategy' as View, label: 'Strategy', icon: Brain },
+  { id: 'alerts' as View, label: 'Alerts', icon: Bell },
   { id: 'case-profile' as View, label: 'Case Profile', icon: FileText },
   { id: 'timeline' as View, label: 'Timeline', icon: Clock },
+  { id: 'logs' as View, label: 'Logs', icon: FileText },
+  { id: 'people' as View, label: 'People', icon: Users },
   { id: 'evidence' as View, label: 'Evidence Vault', icon: FolderOpen },
   { id: 'foundation' as View, label: 'Foundation Builder', icon: ScaleIcon },
   { id: 'presentation' as View, label: 'Presentation', icon: Presentation },
-  { id: 'ai-team' as View, label: 'AI Legal Team', icon: Bot },
   { id: 'logistics' as View, label: 'Logistics', icon: Truck },
   { id: 'hearing' as View, label: 'Hearing Mode', icon: Gavel },
   { id: 'finance' as View, label: 'Finance', icon: DollarSign },

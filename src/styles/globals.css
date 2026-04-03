@@ -2,7 +2,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  /* Night Winter Luxury Palette */
+  /* Pink Glassmorphism Palette - From Inspiration */
+  --color-navy-dark: #190F1B;      /* Deep navy/purple base */
+  --color-pink: #F9A1A9;           /* Soft pink accent */
+  --color-blush: #FFC9CF;          /* Light blush pink */
+  --color-gray: #544E58;           /* Medium gray */
+  
+  /* Original Brand Colors (preserved) */
   --color-primary-900: #7a3d4e;
   --color-primary-800: #8b4758;
   --color-primary-700: #9F5166;
